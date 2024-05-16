@@ -4,11 +4,13 @@ import de.orat.math.cga.api.CGAMultivector;
 import de.orat.math.cga.api.CGARotor;
 import de.orat.math.cga.api.CGAEuclideanBivector;
 import de.orat.math.cga.api.CGAEuclideanVector;
+import de.orat.math.cga.api.CGALineIPNS;
 import de.orat.math.cga.api.CGARoundPointIPNS;
 import de.orat.math.cga.api.CGASphereIPNS;
 import de.orat.math.cga.api.CGASphereOPNS;
 import de.orat.math.cga.api.CGALineOPNS;
 import de.orat.math.cga.api.CGAMotor;
+import de.orat.math.cga.api.CGAPointPairIPNS;
 import de.orat.math.cga.api.CGATranslator;
 import de.orat.math.view.euclidview3d.GeometryViewCGA;
 import static java.lang.Math.PI;
@@ -58,7 +60,11 @@ public class SphereTreeCGA {
             CGARoundPointIPNS x = new CGARoundPointIPNS(Px);
             System.out.println(x);
             //CGAMultivector xAxis = e0.commutation(x.commutation(einf));
+            
+            //CGAPointPairIPNS pp = new CGAPointPairIPNS(x,MS0);
+            //CGALineIPNS xAe = new CGALineIPNS(pp);
             CGALineOPNS xAe = new CGALineOPNS(ur, Px);
+            xAe.dual();
             
             //xAxis = xAxis.normalize();
             System.out.println(xAe);
