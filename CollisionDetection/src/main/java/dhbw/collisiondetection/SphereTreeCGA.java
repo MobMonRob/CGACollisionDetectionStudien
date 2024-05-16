@@ -52,17 +52,19 @@ public class SphereTreeCGA {
             CGAMultivector tz = CGAMultivector.createEz(d_m[i]);
             CGATranslator t = new CGATranslator(tx.add(tz));
                                    
-            //Rotationsmatrix um die X-Achse   
+            //Rotor um die X-Achse   
+            Point3d ur = new Point3d(0,0,0);
             Point3d Px = new Point3d(1,0,0);
             CGARoundPointIPNS x = new CGARoundPointIPNS(Px);
             System.out.println(x);
-            CGAMultivector xAxis = e0.commutation(x.commutation(einf));
-            //CGALineOPNS xAxis = new CGALineOPNS(e0.commutation(x));
+            //CGAMultivector xAxis = e0.commutation(x.commutation(einf));
+            CGALineOPNS xAe = new CGALineOPNS(ur, Px);
             
-            xAxis = xAxis.normalize();
-            System.out.println(xAxis);
+            //xAxis = xAxis.normalize();
+            System.out.println(xAe);
             
-            CGAEuclideanBivector xAx = new CGAEuclideanBivector(xAxis);
+            CGAEuclideanBivector xAx = new CGAEuclideanBivector(xAe);
+            xAx.normalize();
             CGARotor R = new CGARotor(xAx, alpha_rad[i]);
             System.out.println(R);
                 
