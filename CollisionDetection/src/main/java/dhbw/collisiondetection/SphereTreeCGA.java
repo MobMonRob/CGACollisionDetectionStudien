@@ -36,58 +36,54 @@ public class SphereTreeCGA {
     double r[] = new double[]{90, 90, 90, 65, 70, 70, 50};
           
     public void addtoGeomeryView (GeometryViewCGA gv){
-        List<CGAMultivector> Kugeln = new ArrayList();
         
-        CGAMultivector einf = CGAMultivector.createInf(1);        
+        List<CGAMultivector> Kugeln = new ArrayList();
+               
         CGAMultivector e0 = CGAMultivector.createOrigin(1);
         CGARoundPointIPNS MS0 = new CGARoundPointIPNS(e0);
-        MS0 = MS0.normalize();
-        //CGASphereIPNS S0 = new CGASphereIPNS(MS0, 90);   
-          
-        CGAMultivector SphereCenterCGA = MS0;
         Kugeln.add(MS0);
-                
+                        
         for(int i = 1; i < 7; i++){
             
-            //Translationsvektor aus den DH-Parametern:
-            CGAMultivector tx = CGAMultivector.createEx(a_m[i]);
-            CGAMultivector tz = CGAMultivector.createEz(d_m[i]);
-            CGATranslator t = new CGATranslator(tx.add(tz));
-                                   
+            //Translator aus den DH-Parametern:
+            Vector3d t = new Vector3d();
+            t.setZ(d_m[i]);
+            t.setX(a_m[i]);
+            CGATranslator T = new CGATranslator(t);
+                                                           
             //Rotor um die X-Achse   
-            Point3d ur = new Point3d(0,0,0);
-            Point3d Px = new Point3d(1,0,0);
-            CGARoundPointIPNS x = new CGARoundPointIPNS(Px);
-            System.out.println(x);
-            //CGAMultivector xAxis = e0.commutation(x.commutation(einf));
+            Point3d x = new Point3d(1,0,0);
+            CGARoundPointIPNS Px = new CGARoundPointIPNS(x);
+            CGALineOPNS xAe = new CGALineOPNS(MS0, Px);
+            CGALineIPNS xAxis = xAe.dual();
+            System.out.println(xAxis);
+            CGAEuclideanBivector xA = new CGAEuclideanBivector(xAxis);
+            xA.normalize();
+            CGARotor Rx = new CGARotor(xA, alpha_rad[i]);
+            System.out.println(Rx);
             
-            //CGAPointPairIPNS pp = new CGAPointPairIPNS(x,MS0);
-            //CGALineIPNS xAe = new CGALineIPNS(pp);
-            CGALineOPNS xAe = new CGALineOPNS(ur, Px);
-            xAe.dual();
+            //Rotor um die z-Achse   
+            Point3d z = new Point3d(0,0,1);
+            CGARoundPointIPNS Pz = new CGARoundPointIPNS(z);
+            CGALineOPNS zAe = new CGALineOPNS(MS0, Pz);
+            CGALineIPNS zAxis = zAe.dual();
+            CGAEuclideanBivector zA = new CGAEuclideanBivector(zAxis);
+            zA.normalize();
+            CGARotor Rz = new CGARotor(zA, theta_rad[i]);
             
-            //xAxis = xAxis.normalize();
-            System.out.println(xAe);
-            
-            CGAEuclideanBivector xAx = new CGAEuclideanBivector(xAe);
-            xAx.normalize();
-            CGARotor R = new CGARotor(xAx, alpha_rad[i]);
-            System.out.println(R);
-                
+                                        
             //Transformation
-            CGAMotor M = new CGAMotor(R, t);
-            System.out.println(M);
             
-            CGAMultivector test = (M.ip(Kugeln.get(i-1).ip(M.reverse())));
-            System.out.println(test);
-                       
+            CGAMultivector test = Rx.transform(T.transform(Kugeln.get(i-1)));
+            
             Kugeln.add(test);
             System.out.println("Das sind die Kugelmittelpunkte: "+Kugeln);
             
             
-            Point3d SphereCenter = SphereCenterCGA.extractE3ToPoint3d();
+        }
+        for(int i = 0; i < 7; i++){
+            Point3d SphereCenter = Kugeln.get(i).extractE3ToPoint3d();
             gv.addSphere(SphereCenter, r[i], translucent, "");
-                 
         }
     }
         
