@@ -32,14 +32,14 @@ public class CollisionDetection extends GeometryViewCGA{
         gv.setUpRobotMovementUIWithSlidersWithCollisionDetection();
           
         //lineare Algebra:
-        //SphereTree spheretree = new SphereTree();
-        //spheretree.addtoGeometryView3d(gv);
-        //spheretree.distance();
+        SphereTree spheretree = new SphereTree();
+        spheretree.addtoGeometryView3d(gv);
+        spheretree.distance();
         
         //CGA:
-        SphereTreeCGA st = new SphereTreeCGA();
-        st.addtoGeomeryView(gv);
-        
+        //SphereTreeCGA st = new SphereTreeCGA();
+        //st.addtoGeomeryView(gv);
+        //st.spherehierarchie();
         
     }
     
@@ -90,7 +90,7 @@ public class CollisionDetection extends GeometryViewCGA{
                     
                     for (int k = 1; k < 6; k++){
                         theta.add(gelenke[k]);
-                       // System.out.println("t"+theta);
+                        //System.out.println("t"+theta);
                         
                     }
                 });                   
